@@ -35,11 +35,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare nombre_abonnee: number
 
   @column()
-  declare is_verify: boolean 
+  declare is_verify: boolean | null
 
   @column()
   declare date_naissance: Date | null
-
 
 
 

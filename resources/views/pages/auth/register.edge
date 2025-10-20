@@ -24,10 +24,9 @@
           <h2 class="text-2xl font-bold mb-6">
             Créer votre compte
           </h2>
-          {{csrfField()}}
-
-          <form class="space-y-4" id="signup-form" method="post" action="{{routre('store')}}">
-        
+       
+          <form class="space-y-4" id="signup-form" method="post" action="{{route('store')}}">
+             {{ csrfField() }}
             <input
               type="text"
               name="fullName"
@@ -35,6 +34,7 @@
               placeholder="Nom et prénom"
               class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
+           
             <input
               type="email"
               name="email"
@@ -69,7 +69,7 @@
               type="submit"
               class="w-full bg-white text-black font-semibold py-3 rounded-full hover:bg-gray-200 transition"
             >
-              Suivant
+              Creation compte
                 </button>
           </form>
         </div>

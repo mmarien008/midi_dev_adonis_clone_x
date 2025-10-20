@@ -6,7 +6,11 @@ router.on('/').render('pages/home')
 
 
 router.get("/register",[AuthController,"register"]).as("register")
-router.post("/store",[AuthController,"register"]).as("store")
+router.post("/store",[AuthController,"store"]).as("store")
+
+router.get("/send_email",[AuthController,"send_email"]).as("send_email")
+
+
 
 
 

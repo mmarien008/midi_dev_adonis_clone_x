@@ -34,6 +34,15 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare nombre_abonnee: number
 
+  @column()
+  declare is_verify: boolean 
+
+  @column()
+  declare date_naissance: Date | null
+
+
+
+
   @manyToMany(() => User, {
     pivotTable: 'suivis',
     localKey: 'id',

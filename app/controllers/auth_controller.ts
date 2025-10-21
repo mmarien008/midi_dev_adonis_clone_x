@@ -27,7 +27,6 @@ export default class AuthController {
 
   async send_email(user: User) {
     const code = Math.floor(100000 + Math.random() * 900000).toString()
-
     await VerifyCode.updateOrCreate(
       { userId: user.id },
       {
@@ -46,6 +45,7 @@ export default class AuthController {
     })
   }
 
+  
   async verify_page({ view }: HttpContext) {
     return view.render('emails/insert_message_confirme')
   }
@@ -59,13 +59,11 @@ export default class AuthController {
 
     if (!verifyCode) {
       session.flash('errors', 'Code invalide ou déjà utilisé.')
-      console.log('Code invalide ou déjà utilisé.');
       return response.redirect().back()
     }
 
     if (verifyCode.expiresAt < DateTime.now()) {
       session.flash('errors', 'Ce code a expiré. Veuillez demander un nouveau code.')
-      console.log('Ce code a expiré. Veuillez demander un nouveau code.');
       return response.redirect().back()
     }
 

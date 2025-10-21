@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vérification du code</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+
+  <body class="bg-black text-white flex items-center justify-center min-h-screen px-4">
+    <section class="bg-[#16181c] rounded-xl w-full max-w-md p-6 shadow-lg">
+      <div class="flex justify-center mb-6">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/2/22/X_logo_2023.svg"
+          alt="Logo X"
+          class="h-7"
+        />
+      </div>
+
+      <h2 class="text-2xl font-bold text-center mb-4">
+        Vérifiez votre e-mail
+      </h2>
+      <p class="text-sm text-gray-400 text-center mb-6">
+        Entrez le code à 6 chiffres que nous avons envoyé à votre adresse e-mail.
+      </p>
+
+      {{-- Messages flash --}}
+      @if (session.has('error'))
+        <div class="bg-red-500 text-white p-3 rounded-md mb-4 text-sm text-center">
+          {{ session.get('error') }}
+        </div>
+      @endif
+
+      @if (session.has('success'))
+        <div class="bg-green-500 text-white p-3 rounded-md mb-4 text-sm text-center">
+          {{ session.get('success') }}
+        </div>
+      @endif
+
+      <form method="POST" action="{{ route('verify.code') }}" class="space-y-4">
+        {{ csrfField() }}
+
+        <input
+          type="text"
+          name="code"
+          maxlength="6"
+          placeholder="Entrez votre code ici"
+          class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-center tracking-widest text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          required
+        />
+
+        <button
+          type="submit"
+          class="w-full bg-white text-black font-semibold py-3 rounded-full hover:bg-gray-200 transition"
+        >
+          Vérifier
+        </button>
+      </form>
+
+      <div class="mt-6 text-center text-sm text-gray-400">
+        Vous n’avez pas reçu le code ? 
+        <a
+          href=""
+          class="text-blue-400 hover:underline font-medium"
+        >
+          Renvoyer le code
+        </a>
+      </div>
+    </section>
+  </body>
+</html>

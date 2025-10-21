@@ -1,8 +1,31 @@
 <!DOCTYPE html>
-<html>
-  <body>
-  
-    <h1>Vérifiez votre email</h1>
-    <p>Votre code est {{code}}</p>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vérifiez votre adresse e-mail</title>
+  </head>
+  <body style="font-family: 'Inter', sans-serif; background-color: #f3f4f6; color: #1f2937; margin: 0; padding: 0;">
+    <div style="max-width: 600px; margin: 40px auto; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 32px;">
+      
+     
+      <div style="text-align: center; border-bottom: 2px solid #e5e7eb; padding-bottom: 16px;">
+        <h1 style="color: #2563eb; font-size: 24px; margin: 0;">Vérifiez votre adresse e-mail</h1>
+      </div>
+
+      <div style="text-align: center; margin-top: 32px;">
+        <p style="font-size: 16px; color: #4b5563;">Bonjour <strong>{{ fullName }}</strong>,</p>
+        <p style="font-size: 16px; color: #4b5563;">Merci de vous être inscrit ! Voici votre code de vérification :</p>
+
+        <div style="display: inline-block; background-color: #2563eb; color: #ffffff; font-size: 22px; font-weight: bold; letter-spacing: 4px; padding: 12px 24px; border-radius: 8px; margin: 20px 0;">
+          {{ code }}
+        </div>
+
+        <p style="font-size: 16px; color: #4b5563;">Entrez ce code sur notre site pour activer votre compte.</p>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px; font-size: 14px; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 16px;">
+        <p>Si vous n’avez pas créé de compte, ignorez simplement cet e-mail.</p>
+      </div>
+    </div>
   </body>
 </html>

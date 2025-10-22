@@ -8,3 +8,11 @@ export const createUserValidator = vine.compile(
     confirme:vine.string().minLength(10).maxLength(256)
   })
 )
+
+export const loginUserValidator = vine.compile(
+  vine.object({
+    email: vine.string().trim().maxLength(256).email(),
+    password: vine.string().minLength(10).maxLength(256),
+ 
+  })
+)

@@ -4,7 +4,7 @@
 
   @slot('content')
 
-    <main ">
+    <main>
       <div class=" w-full  flex justify-around border-b">
 
         <div
@@ -16,12 +16,14 @@
           suivant
         </div>
       </div>
-      <form id="createTweet-form" class=" border-b create flex gap-4 p-4  border-gray-700 text-white">
+      <form method="post" action="{{route('tweet.store')}}" id="createTweet-form" class=" border-b create flex gap-4 p-4  border-gray-700 text-white">
         <div id="photoInitiateur" class="photo w-12 h-12 rounded-full bg-gray-500">
         </div>
+        {{csrfField()}}
         <div class="block flex-1 flex flex-col gap-3 ">
           <textarea
-            id="content"
+          name="contenu"
+            id="contenu"
             class="w-full  bg-transparent text-left resize-none text-lg text-white placeholder-gray-400 focus:outline-none "
             rows="2"
             placeholder="Exprimez-vous..."
@@ -29,9 +31,8 @@
           <div class="flex justify-between items-center">
             <div class="actions flex gap-4 text-blue-400">
               <div class="icon flex items-center gap-1 cursor-pointer hover:text-red-500 transition">
-
                 <button id="uploadBtnT" class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Ajouter une photo</button>
-                <input type="file" id="imageInputT" accept="image/*" class="hidden" />
+                <input name="photo" type="file" id="imageInputT" accept="image/*" class="hidden" />
               </div>
             </div>
             <button
@@ -44,8 +45,48 @@
         </div>
       </form>
 
-      <div id="tweets" class="h-96 overflow-y-auto flex flex-col-reverse">
-        <!-- les tweets ici -->
+      <div id="tweets" class="h-96 overflow-y-auto flex flex-col">
+
+        @each(tweet in tweets)
+        <div class="border-b flex p-4 border-b border-gray-700">
+          <div
+            class="w-12 h-12 rounded-full bg-gray-500 mr-3"
+            style="background-image: url('${tweet.photo}'); background-size: cover; background-position: center;"
+          >
+          </div>
+          <div class="flex-1 flex flex-col ">
+            <div class="flex gap-2 text-sm justify-between">
+
+              <div>
+                <span class="font-bold text-white">  {{tweet.user.fullName}}</span>
+                <span class="text-gray-400">(cultureCrave) {{tweet.createdAt}} </span>
+              </div>
+
+              <div>
+                <span data-id="${tweet.id}" class="text-red-400 delete">Supprimer</span>
+                <span data-id="${tweet.id}" class="text-blue-400 delete">Editer</span>
+              </div>
+
+            </div>
+            <p class="mt-1 text-white w-96 break-words">
+            {{tweet.contenu}}
+            
+            </p>
+            <!-- ${tweet.media ? `
+            <div class="mt-2 rounded-xl overflow-hidden">
+              <img src="${tweet.media}" alt="media" class="w-full object-cover" />
+            </div>
+            ` : ''} -->
+            <div class="flex justify-between mt-4 text-gray-400 text-sm">
+              <span>💬 ${0}</span>
+              <span>🔁 ${0}</span>
+              <span>❤️ ${0}</span>
+              <span>📤</span>
+            </div>
+          </div>
+        </div>
+        @end
+
       </div>
 
     </main>

@@ -48,6 +48,7 @@
               Poster
           </button>
             <form action="{{ route('auth.logout') }}" method="post">
+            {{csrfField()}}
 
               <button
                 type="submit"

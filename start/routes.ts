@@ -14,13 +14,14 @@ router
     router.post('/store', [AuthController, 'store']).as('store')
     router.post('/verify-code', [AuthController, 'verify_code']).as('verify.code')
     router.get('/verify', [AuthController, 'verify_page']).as('verify.page')
-    
     router.post('/login_step2', [AuthController, 'logigStep2']).as('auth.login_step2')
     router.post('/toLogin', [AuthController, 'toLogin']).as('auth.toLogin')
     router.post('/logout', [AuthController, 'logout']).as('auth.logout')
   })
   .prefix('/auth')
 
+
+  
 router
   .group(() => {
     router.post('/store', [TweetsController, 'store']).as('tweet.store')
@@ -29,6 +30,7 @@ router
     router.get('/update/{id}', [TweetsController, 'update']).as('tweet.update')
   })
   .prefix('/tweet').use(middleware.auth())
+
 
 router
   .group(() => {

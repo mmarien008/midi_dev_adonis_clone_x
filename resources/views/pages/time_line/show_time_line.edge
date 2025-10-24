@@ -1,0 +1,54 @@
+
+
+@layout.base({ title: "Time_line" })
+
+  @slot('content')
+
+    <main ">
+      <div class=" w-full  flex justify-around border-b">
+
+        <div
+          class="py-4  inline-flex border-b-4 border-blue-500   flex justify-center items-center  text-center"
+        >
+          Pour toi
+        </div>
+        <div class="py-4  inline-flex  flex justify-center items-center text-center">
+          suivant
+        </div>
+      </div>
+      <form id="createTweet-form" class=" border-b create flex gap-4 p-4  border-gray-700 text-white">
+        <div id="photoInitiateur" class="photo w-12 h-12 rounded-full bg-gray-500">
+        </div>
+        <div class="block flex-1 flex flex-col gap-3 ">
+          <textarea
+            id="content"
+            class="w-full  bg-transparent text-left resize-none text-lg text-white placeholder-gray-400 focus:outline-none "
+            rows="2"
+            placeholder="Exprimez-vous..."
+          ></textarea>
+          <div class="flex justify-between items-center">
+            <div class="actions flex gap-4 text-blue-400">
+              <div class="icon flex items-center gap-1 cursor-pointer hover:text-red-500 transition">
+
+                <button id="uploadBtnT" class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Ajouter une photo</button>
+                <input type="file" id="imageInputT" accept="image/*" class="hidden" />
+              </div>
+            </div>
+            <button
+              type="button submit"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-full font-semibold transition"
+            >
+              Publier
+                    </button>
+          </div>
+        </div>
+      </form>
+
+      <div id="tweets" class="h-96 overflow-y-auto flex flex-col-reverse">
+        <!-- les tweets ici -->
+      </div>
+
+    </main>
+  @endslot
+@end
+

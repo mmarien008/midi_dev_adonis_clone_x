@@ -8,6 +8,12 @@
 </head>
 <body>
 
+ @if (session.has('error'))
+        <div class="bg-red-500 text-white p-3 rounded-md mb-4 text-sm text-center">
+          {{ session.get('error') }}
+        </div>
+      @endif
+
     <main>
         <section class="min-h-screen bg-black text-white flex items-center justify-center px-4">
             <form  method="post"  action="{{route('auth.login_step2')}}" id="auth_login" class="bg-[#16181c] rounded-xl w-full max-w-md p-6">

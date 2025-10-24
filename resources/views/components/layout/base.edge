@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4">
+
+    </script>
+    <title>
+      {{ title }}
+    </title>
+  </head>
+  <body>
+    <div class="flex max-w-[1200px] mx-auto min-h-screen bg-black text-white">
+      <!-- Barre gauche -->
+      <aside class="w-[250px] p-4 border-r border-gray-800 hidden md:block">
+        <div class="space-y-4">
+          <h1 class="text-2xl font-bold">
+            🐦
+          </h1>
+          <nav class="space-y-2">
+            <a href="#" class="block text-xl hover:font-bold"></a>
+            <a href="timeline.html" class="block text-xl hover:font-bold flex items-center">
+              <i class="fa-solid fa-house mr-2 "></i>
+              Accueil
+          </a>
+            <a href="user/profil.html" class="block text-xl hover:font-bold flex items-center">
+              <i class="fa-solid fa-user mr-2"></i>
+              Profil
+          </a>
+
+          </nav>
+          <div class="space-y-3">
+            <!-- Bouton Poster -->
+            <button
+              class="flex items-center justify-center gap-2 bg-white text-black px-4 py-2 rounded-full w-full hover:bg-black hover:text-white transition duration-300 shadow-md hover:shadow-lg"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+
+              </svg>
+              Poster
+          </button>
+            <form action="{{ route('auth.logout') }}" method="post">
+
+              <button
+                type="submit"
+                id="deconnexion"
+                class="flex items-center justify-center gap-2 bg-white text-red-600 px-4 py-2 rounded-full w-full hover:bg-red-600 hover:text-white transition duration-300 shadow-md hover:shadow-lg"
+              >
+               
+
+                Déconnexion
+            
+            </button>
+            </form>
+          </div>
+
+          <div class="flex items-center justify-around ">
+
+            <div id="photoPlus" class="photo w-12 h-12 min-w-12 rounded-full border">
+            </div>
+            <div class="flex flex-col w-2/3 break-words ">
+              @if(auth.isAuthenticated)
+
+                <span id="nameUser" class="font-semibold break-words">{{ auth.user.fullName }} </span>
+              @end
+              
+              <span id="emailUser" class="text-sm text-gray-500 break-words">{{ auth.user.email }} </span>
+
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <main class="flex-1 border-x border-gray-800 p-4">
+        {{{ await $slots.content() }}}
+      </main>
+
+      <aside class="w-[300px] p-4 hidden lg:block">
+        <div class="bg-[#16181c] p-4 rounded-xl mb-4">
+          <h2 class="font-bold text-lg mb-2">
+            Vous pourriez aimer
+          </h2>
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <p class="font-semibold">
+                *Urbano*
+              </p>
+              <p class="text-sm text-gray-400">
+                @Urbano_N
+              </p>
+            </div>
+            <button class="text-blue-500 font-semibold">Suivre</button>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <p class="font-semibold">
+                Bernard BAHATI
+              </p>
+              <p class="text-sm text-gray-400">
+                @Bernard_bahati
+              </p>
+            </div>
+            <button class="text-blue-500 font-semibold">Suivre</button>
+          </div>
+        </div>
+
+        <div class="bg-[#16181c] p-4 rounded-xl">
+          <h2 class="font-bold text-lg mb-2">
+            Ce qui se passe
+          </h2>
+          <p class="text-sm text-gray-300">
+            Tendances : <strong>#Nairobi</strong>· 51k publications
+          </p>
+          <p class="text-sm text-gray-300 mt-2">
+            Tendances : <strong>#le m23</strong>· 2700 publications
+          </p>
+        </div>
+      </aside>
+
+    </div>
+
+  </body>
+</html>

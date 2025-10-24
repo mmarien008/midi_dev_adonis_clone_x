@@ -1,0 +1,63 @@
+@layout.base({title:"profile"})
+
+@slot('content')
+
+<main >
+
+      <div class="max-w-3xl mx-auto bg-black text-white font-sans">
+        <!-- Bannière -->
+        <div class="relative">
+          <div class="w-full h-48 object-cover bg-white">
+          </div>
+           <div id="photoProfil" class="w-28 h-28 rounded-full border-4 border-black absolute -bottom-14 left-6 bg-blue-600">
+           </div>
+        </div>
+      
+        <!-- Section infos utilisateur -->
+        <div class="pt-16 px-6">
+          <div class="flex justify-between items-center">
+            <div>
+              <h1 id="name" class="text-xl font-bold flex items-center gap-2">
+               
+              </h1>
+              <p id="namear" class="text-gray-400">
+
+              </p>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" class="hidden">
+            <button id="uploadBtn" class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Éditer le profil</button>
+            <span id="uploadStatus" class="ml-2 text-green-500 text-sm hidden"> Image chargée</span>
+          </div>
+      
+          <div class="mt-4">
+            <p>worship Jesus &amp;&amp; Code || Eat || Sleep</p>
+            <p class="text-gray-400 mt-2">
+              📍 Kinshasa, DRC · 🗓 A rejoint X en mars 2021
+            </p>
+          </div>
+
+          <!-- Stats -->
+          <div class="flex space-x-4 mt-4 text-sm">
+            <span><span id="following" class="font-bold">0</span> abonnements</span>
+            <span><span id="followers" class="font-bold">1</span> abonnés</span>
+          </div>
+        </div>
+      
+        <!-- Onglets -->
+        <div class="flex justify-around mt-6 border-b border-gray-700 text-sm">
+          <button class="pb-2 border-b-4 border-blue-500 font-semibold">Posts</button>
+          <button class="pb-2 hover:text-blue-400">Réponses</button>
+          <button class="pb-2 hover:text-blue-400">Médias</button>
+          <button class="pb-2 hover:text-blue-400">J’aime</button>
+        </div>
+      
+        <div id="tweets" class="h-96 overflow-y-auto">
+          <!-- les tweets ici -->
+        </div>
+      </div>
+      
+    </main>
+
+
+@endslot
+@end

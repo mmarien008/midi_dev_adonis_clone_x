@@ -20,12 +20,11 @@ export default class AuthController {
         return response.redirect().back()
       }
 
-      await User.create({ fullName, email, password })
+      let user = await User.create({ fullName, email, password })
 
-      // await this.send_email(user)
+      await this.send_email(user)
       session.flash('success', 'User registered successfully')
-      // return response.redirect().toRoute('verify.page')
-      return response.redirect().toRoute('home')
+      return response.redirect().toRoute('verify.page')
     } catch (error) {
       session.flash('errors', 'error du serveur')
       return response.redirect().back()
@@ -110,14 +109,23 @@ export default class AuthController {
 
       let user = await User.verifyCredentials(email, password)
 
+      if (user.$attributes.is_verify == false) {
+       session.flash('errors', 'compte non verifié')
+        return response.redirect().toRoute('auth.login')
+      }
       await auth.use('web').login(user)
-      return response.redirect().toRoute('home')
+      return response.redirect().toRoute('time_line.show_data')
     } catch (error) {
       session.flash('notification', {
         type: 'error',
         message: error.message || 'erreur mot de passe ou email incorecte.',
       })
-      return response.redirect().back()
+      return response.redirect().toRoute('auth.login')
     }
+  }
+
+  async logout({ auth,response }: HttpContext) {
+    await auth.use('web').logout()
+     return response.redirect().toRoute('auth.login')
   }
 }

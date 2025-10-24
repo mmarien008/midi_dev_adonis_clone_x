@@ -1,6 +1,7 @@
 import AuthController from '#controllers/auth_controller'
 import TimeLinesController from '#controllers/time_lines_controller'
 import TweetsController from '#controllers/tweets_controller'
+import CommentairesController from '#controllers/commentaires_controller'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
@@ -30,6 +31,15 @@ router
     router.get('/update/{id}', [TweetsController, 'update']).as('tweet.update')
   })
   .prefix('/tweet').use(middleware.auth())
+
+  router
+  .group(() => {
+    router.post('/store', [CommentairesController, 'store']).as('commentaire.store')
+    router.get('/delete/{id}', [TweetsController, 'delete']).as('commentaire.delete')
+    router.get('/edite/{id}', [TweetsController, 'edite']).as('commentaire.edite')
+    router.get('/update/{id}', [TweetsController, 'update']).as('commentaire.update')
+  })
+  .prefix('/commentaire').use(middleware.auth())
 
 
 router

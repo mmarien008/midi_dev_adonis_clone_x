@@ -16,13 +16,18 @@
           suivant
         </div>
       </div>
-      <form method="post" action="{{route('tweet.store')}}" id="createTweet-form" class=" border-b create flex gap-4 p-4  border-gray-700 text-white">
+      <form
+        method="post"
+        action="{{ route('tweet.store') }}"
+        id="createTweet-form"
+        class=" border-b create flex gap-4 p-4  border-gray-700 text-white"
+      >
         <div id="photoInitiateur" class="photo w-12 h-12 rounded-full bg-gray-500">
         </div>
-        {{csrfField()}}
+        {{ csrfField() }}
         <div class="block flex-1 flex flex-col gap-3 ">
           <textarea
-          name="contenu"
+            name="contenu"
             id="contenu"
             class="w-full  bg-transparent text-left resize-none text-lg text-white placeholder-gray-400 focus:outline-none "
             rows="2"
@@ -48,48 +53,93 @@
       <div id="tweets" class="h-96 overflow-y-auto flex flex-col">
 
         @each(tweet in tweets)
-        <div class="border-b flex p-4 border-b border-gray-700">
-          <div
-            class="w-12 h-12 rounded-full bg-gray-500 mr-3"
-            style="background-image: url('${tweet.photo}'); background-size: cover; background-position: center;"
-          >
-          </div>
-          <div class="flex-1 flex flex-col ">
-            <div class="flex gap-2 text-sm justify-between">
+          <div class="border-b flex p-4 border-b border-gray-700">
+            <div
+              class="w-12 h-12 rounded-full bg-gray-500 mr-3"
+              style="background-image: url('${tweet.photo}'); background-size: cover; background-position: center;"
+            >
+            </div>
 
-              <div>
-                <span class="font-bold text-white">  {{tweet.user.fullName}}</span>
-                <span class="text-gray-400">(cultureCrave) {{tweet.createdAt}} </span>
+            <div class="flex-1 flex flex-col">
+              <div class="flex gap-2 text-sm justify-between">
+                <div>
+                  <span class="font-bold text-white">{{ tweet.user.fullName }}</span>
+                  <span class="text-gray-400">{{ tweet.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
+                </div>
+                <div>
+                  <span data-id="{{ tweet.id }}" class="text-red-400 delete">Supprimer</span>
+                  <span data-id="{{ tweet.id }}" class="text-blue-400 edit">Éditer</span>
+                </div>
               </div>
 
-              <div>
-                <span data-id="${tweet.id}" class="text-red-400 delete">Supprimer</span>
-                <span data-id="${tweet.id}" class="text-blue-400 delete">Editer</span>
-              </div>
+              <p class="mt-1 text-white w-96 break-words">
+                {{ tweet.contenu }}
+              </p>
 
-            </div>
-            <p class="mt-1 text-white w-96 break-words">
-            {{tweet.contenu}}
-            
-            </p>
-            <!-- ${tweet.media ? `
-            <div class="mt-2 rounded-xl overflow-hidden">
-              <img src="${tweet.media}" alt="media" class="w-full object-cover" />
-            </div>
-            ` : ''} -->
-            <div class="flex justify-between mt-4 text-gray-400 text-sm">
-              <span>💬 ${0}</span>
-              <span>🔁 ${0}</span>
-              <span>❤️ ${0}</span>
-              <span>📤</span>
+              <div class="flex justify-between mt-4 text-gray-400 text-sm">
+                <span class="comment-btn cursor-pointer" data-id="{{ tweet.id }}">💬 Commenter</span>
+                <span>🔁 0</span>
+                <span>❤️ 0</span>
+                <span>📤</span>
+              </div>
+              @each(commentaire in tweet.commentaires)
+
+                <a href="">{{ commentaire.user.fullName }}</a>
+
+                <p class="border-b">
+                  {{ commentaire.contenu }}
+                </p>
+
+              @end
+              
+              
+              <form
+                method="post"
+                action="{{ route('commentaire.store') }}"
+                id="comment-box-{{ tweet.id }}"
+                class="hidden mt-3"
+              >
+
+                <input type="text" class="hidden" name="id_tweet" value="{{ tweet.id }}" />
+                {{ csrfField() }}
+                <textarea
+                  name="contenu"
+                  id="comment-input-{{ tweet.id }}"
+                  class="w-full bg-gray-800 text-white p-2 rounded"
+                  placeholder="Écrire un commentaire..."
+                ></textarea>
+                <button
+                  type="submit"
+                  class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded send-comment"
+                >
+                  Commenter
+      </button>
+              </form>
             </div>
           </div>
-        </div>
+
         @end
-
+        
       </div>
 
     </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".comment-btn").forEach(btn => {
+          btn.addEventListener("click", e => {
+            const id = e.target.dataset.id;
+            const commentBox = document.getElementById(`comment-box-${id}`);
+            if (commentBox.classList.contains("hidden")) {
+              commentBox.classList.remove("hidden");
+            } else {
+              commentBox.classList.add("hidden");
+            }
+          });
+        });
+      });
+    </script>
+
   @endslot
 @end
 

@@ -20,6 +20,8 @@ export default class Tweet extends BaseModel {
   @column()
   declare contenu: string
 
+
+
   @column()
   declare nombre_like: number | null
 

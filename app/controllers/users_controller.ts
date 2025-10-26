@@ -42,9 +42,16 @@ export default class UsersController {
 
   async suivre({ response, params, auth }: HttpContext) {
     try {
+      // la personne qui suis
       const suiveurId = auth.user?.id
+      const userSuiveur =await User.findOrFail(suiveurId)
+
+        // la personne qui est suivis
       const user = await User.findOrFail(params.id)
       user.nombre_abonnee += 1
+      userSuiveur.nombre_abonnement+=1
+      userSuiveur.save()
+
       user.save()
       Suivi.create({ suiveurId, suiviId: params.id })
       return response.redirect().back()
@@ -54,8 +61,14 @@ export default class UsersController {
   }
   async nonSuivre({ response, params,auth }: HttpContext) {
     try {
+      // la personne qui suis
        const suiveurId = auth.user?.id
-         
+       const userSuiveur =await User.findOrFail(suiveurId)
+        userSuiveur.nombre_abonnement-=1
+      userSuiveur.save()
+
+      // la personne qui est suivis
+
       const user = await User.findOrFail(params.id)
       user.nombre_abonnee -= 1
       user.save()
@@ -65,7 +78,6 @@ export default class UsersController {
           .where('suiveurId', suiveurId)
           .where('suiviId', params.id)
           .first()
-
           suivi?.delete()
       }
     

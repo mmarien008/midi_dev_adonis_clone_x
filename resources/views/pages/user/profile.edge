@@ -29,7 +29,9 @@
             </div>
             <input type="file" id="fileInput" accept="image/*" class="hidden" />
             <button id="uploadBtn" class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Éditer le profil</button>
-            @if(!is_follow)
+           @if(user.id!=auth.user.id )
+           
+            @if(!is_follow  )
             <a href="{{ route('user.suivre',{
               id:user.id
             }) }}">         
@@ -41,6 +43,10 @@
             <button  class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Ne pas suivre</button></a>
 
            @end
+
+       @end
+
+
           </div>
 
           <div class="mt-4">

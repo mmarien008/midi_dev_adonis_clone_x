@@ -3,6 +3,7 @@ import TimeLinesController from '#controllers/time_lines_controller'
 import TweetsController from '#controllers/tweets_controller'
 import CommentairesController from '#controllers/commentaires_controller'
 import router from '@adonisjs/core/services/router'
+import UsersController from '#controllers/users_controller'
 import { middleware } from './kernel.js'
 
 router.on('/').render('pages/home').as('home')
@@ -26,26 +27,26 @@ router
 router
   .group(() => {
     router.post('/store', [TweetsController, 'store']).as('tweet.store')
-    router.get('/delete/{id}', [TweetsController, 'delete']).as('tweet.delete')
-    router.get('/edite/{id}', [TweetsController, 'edite']).as('tweet.edite')
-    router.get('/update/{id}', [TweetsController, 'update']).as('tweet.update')
+    router.get('/delete/:id', [TweetsController, 'delete']).as('tweet.delete')
+    router.get('/edite/:id', [TweetsController, 'edite']).as('tweet.edite')
+    router.get('/update/:id', [TweetsController, 'update']).as('tweet.update')
   })
   .prefix('/tweet').use(middleware.auth())
 
   router
   .group(() => {
     router.post('/store', [CommentairesController, 'store']).as('commentaire.store')
-    router.get('/delete/{id}', [TweetsController, 'delete']).as('commentaire.delete')
-    router.get('/edite/{id}', [TweetsController, 'edite']).as('commentaire.edite')
-    router.get('/update/{id}', [TweetsController, 'update']).as('commentaire.update')
+    router.get('/delete/:id', [CommentairesController, 'delete']).as('commentaire.delete')
   })
   .prefix('/commentaire').use(middleware.auth())
 
 
 router
   .group(() => {
-    router.get('/profile/{id}', [TweetsController, 'edite']).as('user.profile')
-    router.get('/edite/{id}', [TweetsController, 'update']).as('user.edite')
+    router.get('/profile/:id', [UsersController, 'show_profil']).as('user.profile')
+    router.get('/follow/:id', [UsersController, 'suivre']).as('user.suivre')
+     router.get('unfollow/:id', [UsersController, 'nonSuivre']).as('user.nonSuivre')
+
   })
   .prefix('/user').use(middleware.auth())
 

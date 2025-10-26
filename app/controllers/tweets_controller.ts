@@ -29,7 +29,19 @@ export default class TweetsController {
   }
 
   async edite() {}
-  async delete() {}
+  async delete({ params,response}: HttpContext) {
+
+    try {
+        let tweet= await Tweet.findOrFail(params.id)
+        tweet.delete()
+         return response.redirect().toRoute('time_line.show_data')
+        
+    } catch (error) {
+        return response.redirect().back()
+        
+    }
+
+  }
 
   async update() {}
 }

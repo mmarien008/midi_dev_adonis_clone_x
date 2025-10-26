@@ -29,24 +29,24 @@
             </div>
             <input type="file" id="fileInput" accept="image/*" class="hidden" />
             <button id="uploadBtn" class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Éditer le profil</button>
-           @if(user.id!=auth.user.id )
-           
-            @if(!is_follow  )
-            <a href="{{ route('user.suivre',{
+            @if(user.id!=auth.user.id )
+
+              @if(!is_follow  )
+                <a href="{{ route('user.suivre',{
               id:user.id
-            }) }}">         
-            <button  class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Suivre</button></a>
-           @else
-           <a href="{{ route('user.nonSuivre',{
+            }) }}">
+                  <button class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Suivre</button></a>
+              @else
+                <a href="{{ route('user.nonSuivre',{
               id:user.id
-            }) }}">         
-            <button  class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Ne pas suivre</button></a>
+            }) }}">
+                  <button class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Ne pas suivre</button></a>
 
-           @end
-
-       @end
-
-
+              @end
+              
+            @end
+            
+            
           </div>
 
           <div class="mt-4">
@@ -63,7 +63,35 @@
             <span>              <span id="followers" class="font-bold">{{ user.nombre_abonnee }}</span>abonnés</span>
           </div>
         </div>
+    
+        abonnements
+        @each(abonnement in abonnements )
+          <ul>
+            @each(userd in abonnement.user_abonnements )
 
+              <li>
+                {{ userd.email }}
+            {{ userd.fullName }}
+              </li>
+            @end
+          </ul>
+        @end
+        
+        abonnees
+        @each(abonnee in abonnees )
+        <ul>
+          @each(userd in abonnee.user_abonnes )
+          <li>
+                {{ userd.email }}
+            {{ userd.fullName }}
+
+          </li>
+        
+          @end
+           </ul>
+
+        @end
+   
         <!-- Onglets -->
         <div class="flex justify-around mt-6 border-b border-gray-700 text-sm">
           <button class="pb-2 border-b-4 border-blue-500 font-semibold">Posts</button>

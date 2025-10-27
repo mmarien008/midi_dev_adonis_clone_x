@@ -99,19 +99,57 @@
               @end
               
               <div class="flex justify-between mb-3 mt-4 text-gray-400 text-sm">
-                <span class="comment-btn cursor-pointer" data-id="{{ tweet.id }}">{{ tweet.commentaires.length }}💬
+                <span class="comment-btn cursor-pointer" data-id="{{ tweet.id }}">{{ tweet.commentaires.length }}
+                  
             Commenter</span>
+
+                <form action="{{ route('like.tweet') }}" method="POST">
+                  {{ csrfField() }}
+                  <input type="hidden" name="user_id" value="{{ auth.user.id }}" />
+                  <input type="hidden" name="tweet_id" value="{{ tweet.id }}" />
+
+                  @if(tweet.likeTweets.some(like => like.userId === auth.user.id))
+
+                    <button type="submit" class="flex items-center gap-1 text-red-500">
+                      <span>{{ tweet.likeTweets.length }}</span>
+                      <span>                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                          <path
+                            fill-rule="evenodd"
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+                 2 6 4 4 6.5 4 8.04 4 9.54 4.81 10.35 6.09 
+                 11.16 4.81 12.66 4 14.2 4 
+                 16.7 4 18.7 6 18.7 8.5 
+                 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                            clip-rule="evenodd"
+                          />
+                        </svg></span>
+                    </button>
+                  @else
+                  
+                    <button type="submit" class="flex items-center gap-1 text-gray-500">
+                      <span>{{ tweet.likeTweets.length }}</span>
+                      <span>
+
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M21 8.25c0-2.485-2.1-4.5-4.688-4.5A4.685 4.685 0 0012 6.75a4.685 4.685 0 00-4.312-3c-2.587 0-4.688 2.015-4.688 4.5 
+                 0 7.125 9 11.25 9 11.25s9-4.125 9-11.25z"
+                          />
+                        </svg></span>
+                    </button>
+                  @end
+                </form>
                 <span>🔁 0</span>
 
-                <form action="{{ route('like.tweet') }}" method="post">
-                  {{ csrfField() }}
-            <input type="text" name="user_id" value="{{ auth.user.id }}" class="hidden" />
-                  <input type="text" name="tweet_id" value="{{ tweet.id }}" class="hidden" />
-                  <button type="submit">                    <span>{{ tweet.likeTweets.length }}❤️</span></button>
-
-                </form>
-
-                <span>📤</span>
               </div>
               <form
                 method="post"
@@ -155,10 +193,48 @@
                         {{ csrfField() }}
             <input type="text" name="user_id" value="{{ auth.user.id }}" class="hidden" />
                         <input type="text" name="commentaire_id" value="{{ commentaire.id }}" class="hidden" />
-                        <button type="submit">                          <span>{{ commentaire.LikeCommentaires.length }}❤️</span></button>
 
+                        @if(commentaire.LikeCommentaires.some(like => like.userId === auth.user.id))
+
+                          <button type="submit"><span>{{ commentaire.LikeCommentaires.length }}                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                          <path
+                            fill-rule="evenodd"
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+                 2 6 4 4 6.5 4 8.04 4 9.54 4.81 10.35 6.09 
+                 11.16 4.81 12.66 4 14.2 4 
+                 16.7 4 18.7 6 18.7 8.5 
+                 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                            clip-rule="evenodd"
+                          />
+                        </svg></span></button>
+
+                        @else
+                        <button type="submit">{{ commentaire.LikeCommentaires.length }} 
+
+                         <span>
+
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M21 8.25c0-2.485-2.1-4.5-4.688-4.5A4.685 4.685 0 0012 6.75a4.685 4.685 0 00-4.312-3c-2.587 0-4.688 2.015-4.688 4.5 
+                 0 7.125 9 11.25 9 11.25s9-4.125 9-11.25z"
+                          />
+                        </svg></span>
+                        </button>
+                        
+                        @end
+                        
+                        
                       </form>
-                      <span>📤</span>
+                     
                     </div>
                   </div>
                   @if(commentaire.user.id == auth.user.id)
@@ -171,18 +247,18 @@
 
                     </div>
                   @end
-                  
+                    
                 </div>
 
               @end
-              
-              
-              
+                
+                
+                
             </div>
           </div>
 
         @end
-        
+          
       </div>
 
     </main>

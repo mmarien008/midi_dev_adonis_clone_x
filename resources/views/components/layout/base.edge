@@ -68,7 +68,7 @@
             }) }}">
             <div class="flex items-center justify-around ">
 
-              <div id="photoPlus" class="photo w-12 h-12 min-w-12 rounded-full border">
+              <div id="photoPlus" style="background-image: url('{{ auth.user.photo }}'); background-size: cover; background-position: center;" class="photo w-12 h-12 min-w-12 rounded-full border">
               </div>
               <div class="flex flex-col w-2/3 break-words ">
                 @if(auth.isAuthenticated)

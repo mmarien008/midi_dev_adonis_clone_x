@@ -31,7 +31,9 @@
            <a href="{{route('user.edite',{
             id:user.id
            })}}">
+           @if(user.id==auth.user.id )
              <button id="uploadBtn" class="px-4 py-1 border rounded-full text-sm hover:bg-gray-800">Éditer le profil</button>
+             @end
            </a>
 
 

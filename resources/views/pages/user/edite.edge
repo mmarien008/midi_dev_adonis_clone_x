@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      edite
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+
+    <main>
+      <section class="min-h-screen bg-black text-white flex items-center justify-center px-4">
+        <div class="bg-[#16181c] rounded-xl w-full max-w-md p-6">
+          <div class="flex justify-center mb-4">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/2/22/X_logo_2023.svg"
+              alt="Logo X"
+              class="h-6"
+            />
+          </div>
+
+          <h2 class="text-2xl font-bold mb-6">
+            Editer votre profile
+          </h2>
+       
+          <form class="space-y-4" id="signup-form" method="post" enctype="multipart/form-data" action="{{route('user.update',{
+            id:user.id
+          })}}">
+             {{ csrfField() }}
+
+                <input
+              type="file"
+              name="photo"
+              id="photo"
+        
+              class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+
+              <input
+              type="text"
+              name="fullName"
+              value="{{user.fullName}}"
+              id="username"
+              placeholder="Nom et prénom"
+              class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+         
+           
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value="{{user.email}}"
+              placeholder="Entrer un nouveau email"
+              class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+           
+            
+
+            <div>
+              <label class="block text-sm font-semibold mb-1">Date de naissance</label>
+              <p class="text-xs text-gray-400 mb-3">
+                Cette information ne sera pas affichée publiquement. Confirmez votre âge, même si ce compte est pour une entreprise, un animal de compagnie ou autre.
+              </p>
+            </div>
+
+            <!-- Suivant -->
+            <button
+              type="submit"
+              class="w-full bg-white text-black font-semibold py-3 rounded-full hover:bg-gray-200 transition"
+            >
+              Editer
+                </button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+
+  </body>
+</html>

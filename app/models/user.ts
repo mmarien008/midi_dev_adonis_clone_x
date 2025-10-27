@@ -38,6 +38,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare is_verify: boolean | null
 
   @column()
+  declare photo: string | null
+
+  @column()
   declare date_naissance: Date | null
 
 

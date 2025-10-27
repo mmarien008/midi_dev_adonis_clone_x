@@ -44,6 +44,10 @@ router
 router
   .group(() => {
     router.get('/profile/:id', [UsersController, 'show_profil']).as('user.profile')
+    router.get('/edite_profile/:id', [UsersController, 'edite']).as('user.edite')
+
+    router.post('/update_profile/:id', [UsersController, 'update']).as('user.update')
+
     router.get('/follow/:id', [UsersController, 'suivre']).as('user.suivre')
      router.get('unfollow/:id', [UsersController, 'nonSuivre']).as('user.nonSuivre')
 

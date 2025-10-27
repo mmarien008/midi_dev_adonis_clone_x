@@ -14,7 +14,7 @@
   </div>
   <form method="post" action="{{ route('tweet.store') }}" id="createTweet-form" enctype="multipart/form-data"
     class=" border-b create flex gap-4 p-4  border-gray-700 text-white">
-    <div id="photoInitiateur" class="photo w-12 h-12 rounded-full bg-gray-500">
+    <div id="photoInitiateur"  style="background-image: url('{{ auth.user.photo }}'); background-size: cover; background-position: center;" class="photo w-12 h-12 rounded-full bg-gray-500">
     </div>
     {{ csrfField() }}
     <div class="block flex-1 flex flex-col gap-3 ">

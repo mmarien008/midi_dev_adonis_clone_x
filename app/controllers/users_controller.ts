@@ -1,14 +1,12 @@
 import User from '#models/user'
 import Suivi from '#models/suivi'
 import type { HttpContext } from '@adonisjs/core/http'
-
+import string from '@adonisjs/core/helpers/string'
 
 export default class UsersController {
   async show_profil({ view, params, auth }: HttpContext) {
     try {
-    
       let is_follow = false
-
 
       const suiveurId = auth.user?.id
       const abonnements = await User.query().where('id', params.id).preload('user_abonnements')
@@ -50,15 +48,13 @@ export default class UsersController {
     try {
       // la personne qui suis
       const suiveurId = auth.user?.id
-     
 
       // la personne qui est suivis
       const user = await User.findOrFail(params.id)
       user.nombre_abonnee += 1
       user.save()
 
-      
-       const userSuiveur = await User.findOrFail(suiveurId)
+      const userSuiveur = await User.findOrFail(suiveurId)
       userSuiveur.nombre_abonnement += 1
       userSuiveur.save()
 
@@ -91,6 +87,49 @@ export default class UsersController {
       }
 
       return response.redirect().back()
+    } catch (error) {
+      return error.message
+    }
+  }
+
+  async edite({ params, view }: HttpContext) {
+    try {
+      const id_user = params.id
+      const user = await User.findOrFail(id_user)
+
+      return view.render('pages/user/edite', {
+        user,
+      })
+    } catch (error) {
+      return error.message
+    }
+  }
+
+  async update({ params, response, request }: HttpContext) {
+    try {
+      const user = await User.findOrFail(params.id)
+      const fileTemp = request.file('photo')
+      let newName = null
+
+      if (fileTemp) {
+        newName = `${string.generateRandom(32)}.${fileTemp.extname}`
+
+        await fileTemp.move('public/uploads', {
+          name: newName,
+          overwrite: true,
+        })
+      }
+
+      user.fullName = request.input('fullName')
+      user.email = request.input('email')
+      user.photo = `/uploads/${newName}`
+
+      user.save()
+        return response.redirect().toRoute('user.profile',{
+          id:params.id
+        })
+
+      
     } catch (error) {
       return error.message
     }

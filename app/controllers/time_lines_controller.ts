@@ -5,11 +5,12 @@ export default class TimeLinesController {
   async show_data({ view }: HttpContext) {
     const tweets = await Tweet.query()
       .preload('user')
+      .preload('likeTweets')
       .preload(
         'commentaires',
 
         (commentsQuery) => {
-          commentsQuery.preload('user')
+          commentsQuery.preload('user').preload('LikeCommentaires')
         }
       )
 

@@ -9,6 +9,7 @@ import { hasMany } from '@adonisjs/lucid/orm'
 
 import User from '#models/user'
 import Commentaire from '#models/commentaire'
+import LikeTweet from './like_tweet.js'
 
 export default class Tweet extends BaseModel {
   @column({ isPrimary: true })
@@ -39,6 +40,9 @@ export default class Tweet extends BaseModel {
 
   @hasMany(() => Commentaire)
   declare commentaires: HasMany<typeof Commentaire>
+
+  @hasMany(() => LikeTweet)
+  declare likeTweets: HasMany<typeof LikeTweet>
 
   @column()
   declare userId: number

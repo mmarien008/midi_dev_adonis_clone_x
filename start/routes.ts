@@ -5,6 +5,7 @@ import CommentairesController from '#controllers/commentaires_controller'
 import router from '@adonisjs/core/services/router'
 import UsersController from '#controllers/users_controller'
 import { middleware } from './kernel.js'
+import LikesController from '#controllers/likes_controller'
 
 router.on('/').render('pages/home').as('home')
 
@@ -53,5 +54,14 @@ router
 
   })
   .prefix('/user').use(middleware.auth())
+
+
+    router
+  .group(() => {
+    router.post('/like_tweet', [LikesController, 'likeTweets']).as('like.tweet')
+    router.post('/like_commentaire', [LikesController, 'likeCommentaire']).as('like.commentaire')
+   
+  })
+  .prefix('/like').use(middleware.auth())
 
 router.get('time_line/show_data', [TimeLinesController, 'show_data']).as('time_line.show_data').use(middleware.auth())

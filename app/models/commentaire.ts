@@ -4,8 +4,12 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 
+import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { hasMany } from '@adonisjs/lucid/orm'
+
 import User from '#models/user'
 import Tweet from '#models/tweet'
+import LikeCommentaire from '#models/like_commentaire'
 
 export default class Commentaire extends BaseModel {
   @column({ isPrimary: true })
@@ -43,4 +47,8 @@ export default class Commentaire extends BaseModel {
     foreignKey: 'commentaireId',
   })
   declare Commentaire_parent: BelongsTo<typeof Commentaire>
+
+
+    @hasMany(() => LikeCommentaire)
+    declare LikeCommentaires: HasMany<typeof LikeCommentaire>
 }

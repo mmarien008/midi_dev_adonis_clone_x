@@ -28,7 +28,7 @@ export default class TweetsController {
     }
   }
 
-  async edite() {}
+ 
   async delete({ params,response}: HttpContext) {
 
     try {
@@ -41,6 +41,10 @@ export default class TweetsController {
         
     }
 
+  }
+
+   async edite() {
+    
   }
 
   async update() {}

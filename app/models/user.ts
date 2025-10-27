@@ -43,8 +43,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare date_naissance: Date | null
 
-
-
   @manyToMany(() => User, {
     pivotTable: 'suivis',
     localKey: 'id',

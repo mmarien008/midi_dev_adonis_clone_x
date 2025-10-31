@@ -1,7 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Tweet from '#models/tweet'
+import Retweet from '#models/retweet'
 import string from '@adonisjs/core/helpers/string'
-
+import Hashtag from '#models/hashtag'
 
 export default class TweetsController {
   async store({ request, response, auth }: HttpContext) {
@@ -14,38 +15,53 @@ export default class TweetsController {
 
         await fileTemp.move('public/uploads', {
           name: newName,
-          overwrite: true, 
+          overwrite: true,
         })
-
+        newName =`/uploads/${newName}`
       }
 
       let contenu = request.input('contenu')
       let userId = auth.user?.id
-      await Tweet.create({ contenu, userId, photo: `/uploads/${newName}` })
+      const tweet =await Tweet.create({ contenu, userId, photo: newName })
+
+      const hashtags = contenu.match(/#\w+/g) 
+      if (hashtags) {
+        for (const tag of hashtags) {
+          const hashtag = await Hashtag.firstOrCreate({ name: tag.slice(1) })
+          await tweet.related('hashtags').attach([hashtag.id])
+        }
+      }
       return response.redirect().toRoute('time_line.show_data')
     } catch (error) {
       return error.message
     }
   }
 
- 
-  async delete({ params,response}: HttpContext) {
-
+  async delete({ params, response }: HttpContext) {
     try {
-        let tweet= await Tweet.findOrFail(params.id)
-        tweet.delete()
-         return response.redirect().toRoute('time_line.show_data')
-        
+      let tweet = await Tweet.findOrFail(params.id)
+      tweet.delete()
+      return response.redirect().toRoute('time_line.show_data')
     } catch (error) {
-        return response.redirect().back()
-        
+      return response.redirect().back()
     }
-
   }
 
-   async edite() {
-    
+  async retweet({ params, response,auth }: HttpContext) {
+    try {
+      let tweet = await Tweet.findOrFail(params.id)
+
+      Retweet.create({
+        userId:auth.user?.id,
+        tweetId:tweet.id,
+      })
+      return response.redirect().toRoute('time_line.show_data')
+    } catch (error) {
+      return error.message
+    }
   }
+
+  async edite() {}
 
   async update() {}
 }

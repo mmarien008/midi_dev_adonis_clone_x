@@ -1,0 +1,67 @@
+@layout.base({ title: `#${hashtag.name}` })
+  @slot('content')
+    <main class="p-4">
+      <h1 class="text-2xl font-bold mb-4 text-white">#{{ hashtag.name }}</h1>
+
+      <div id="tweets" class="flex flex-col gap-4">
+        @each(tweet in hashtag.tweets)
+          <div class="border-b flex p-4 border-gray-700">
+            <!-- Photo utilisateur -->
+            <a href="{{ route('user.profile', { id: tweet.user.id }) }}">
+              <div
+                class="w-12 h-12 rounded-full bg-gray-500 mr-3"
+                style="background-image: url('{{ tweet.user.photo }}'); background-size: cover; background-position: center;"
+              ></div>
+            </a>
+
+            <div class="flex-1 flex flex-col">
+              <!-- Nom et date -->
+              <div class="flex justify-between items-center">
+                <div>
+                  <span class="font-bold text-white">{{ tweet.user.fullName }}</span>
+                  <span class="text-gray-400 ml-2">{{ tweet.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
+                </div>
+              </div>
+
+              <!-- Contenu -->
+              <p class="mt-1 text-white w-full break-words">{{ tweet.contenu }}</p>
+
+              <!-- Photo tweet -->
+              @if(tweet.photo)
+                <div class="mt-2 rounded-xl overflow-hidden">
+                  <img src="{{ tweet.photo }}" alt="media" class="w-full object-cover" />
+                </div>
+              @end
+
+              <!-- Hashtags -->
+              <div class="mt-2 flex gap-2 text-blue-400">
+                @each(tag in tweet.hashtags)
+                  <a href="{{ route('hashtag.show', { name: tag.name }) }}" class="hover:underline">#{{ tag.name }}</a>
+                @end
+              </div>
+
+              <!-- Actions : Commentaires / Likes / Retweets -->
+              <div class="flex justify-between mt-3 text-gray-400 text-sm">
+                <span>{{ tweet.commentaires.length }} Commentaires</span>
+                <span>{{ tweet.likeTweets.length }} Likes</span>
+                <span>{{ tweet.retweets.length }} Retweets</span>
+              </div>
+            </div>
+          </div>
+        @end
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".comment-btn").forEach(btn => {
+          btn.addEventListener("click", e => {
+            const id = e.target.dataset.id;
+            const commentBox = document.getElementById(`comment-box-${id}`);
+            commentBox.classList.toggle("hidden");
+          });
+        });
+      });
+    </script>
+  @endslot
+@end

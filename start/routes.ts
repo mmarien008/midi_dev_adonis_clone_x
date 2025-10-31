@@ -7,6 +7,7 @@ import UsersController from '#controllers/users_controller'
 import { middleware } from './kernel.js'
 import LikesController from '#controllers/likes_controller'
 import HashtagsController from '#controllers/hashtags_controller'
+import AisController from '#controllers/ais_controller'
 
 router.on('/').render('pages/home').as('home')
 
@@ -67,11 +68,19 @@ router
   .as('time_line.show_data')
   .use(middleware.auth())
 
-
-  router
+router
   .group(() => {
     router.get('/show/:name', [HashtagsController, 'show']).as('hashtag.show')
-  
   })
   .prefix('/hashtag')
+  .use(middleware.auth())
+
+router
+  .group(() => {
+    
+    router.get('/grok_page', [AisController, 'suggePage']).as('ai.page')
+    router.post('/enrich-tweet', [AisController, 'enrichTweet'])
+     router.post('/suggest-hashtags', [AisController, 'suggestHashtags'])
+  })
+  .prefix('/grok')
   .use(middleware.auth())

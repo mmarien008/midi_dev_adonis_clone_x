@@ -1,81 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      signup
-    </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  </head>
-  <body>
-   @if (session.has('error'))
-        <div class="bg-red-500 text-white p-3 rounded-md mb-4 text-sm text-center">
-          {{ session.get('error') }}
-        </div>
-      @endif
-    <main>
-      <section class="min-h-screen bg-black text-white flex items-center justify-center px-4">
-        <div class="bg-[#16181c] rounded-xl w-full max-w-md p-6">
-          <div class="flex justify-center mb-4">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/2/22/X_logo_2023.svg"
-              alt="Logo X"
-              class="h-6"
-            />
-          </div>
+@layout.authLayout({title:"register"})
 
-          <h2 class="text-2xl font-bold mb-6">
-            Créer votre compte
-          </h2>
+@slot('content')
        
-          <form class="space-y-4" id="signup-form" method="post" action="{{route('store')}}">
-             {{ csrfField() }}
-            <input
-              type="text"
-              name="fullName"
-              id="username"
-              placeholder="Nom et prénom"
-              class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-           
-            <input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Entrer votre email"
-              class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Entrer le mot de passe"
-              class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-            <input
-              type="password"
-              name="confirme"
-              id="confirmPassword"
-              placeholder="Confirmer le mot de passe"
-              class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
+          <form class="space-y-4" id="signup-form" method="post" action="{{ route('store') }}">
+            {{ csrfField() }}
 
-         
+            @!component('components/input', {
+              type: 'text',
+              name: 'fullName',
+              title: 'Nom et prénom'
+            })
 
-            <!-- Suivant -->
+            @!component('components/input', {
+              type: 'email',
+              name: 'email',
+              title: 'Entrer votre email'
+            })
+
+            @!component('components/input', {
+              type: 'password',
+              name: 'password',
+              title: 'Entrer le mot de passe'
+            })
+
+            @!component('components/input', {
+              type: 'password',
+              name: 'confirme',
+              title: 'Confirmer le mot de passe'
+            })
+
             <button
               type="submit"
               class="w-full bg-white text-black font-semibold py-3 rounded-full hover:bg-gray-200 transition"
             >
-              Creation compte
-                </button>
+              Création de compte
+            </button>
           </form>
-        </div>
-      </section>
-
-    </main>
-
-  </body>
-</html>
+      
+@endslot
+@end

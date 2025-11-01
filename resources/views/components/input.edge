@@ -1,7 +1,20 @@
-<input
-  type="{{type}}"
-  name="{{name}}"
-  id="inp"
-  placeholder="{{title}}"
-  class="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-/>
+
+<div class="space-y-2">
+  @if(title)
+    <label for="{{ name }}" class="block text-sm font-medium text-gray-300">
+      {{ title }}
+    </label>
+  @endif
+  
+ 
+  <input
+    type="{{ type }}"
+    name="{{ name }}"
+    
+    id="{{ name }}"
+    placeholder="{{ placeholder || title }}"
+    class="w-full {{ hidden ? 'hidden' : '' }} bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+
+
+  />
+</div>

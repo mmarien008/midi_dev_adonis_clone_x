@@ -107,9 +107,13 @@ export default class AuthController {
 
   async toLogin({ request, response, auth, session }: HttpContext) {
     try {
+
+    
       let { email, password } = await request.validateUsing(loginUserValidator)
 
       let user = await User.verifyCredentials(email, password)
+
+
 
       // if (user.$attributes.is_verify == false) {
       //  session.flash('errors', 'compte non verifié')
@@ -122,7 +126,7 @@ export default class AuthController {
         type: 'error',
         message: error.message || 'erreur mot de passe ou email incorecte.',
       })
-      return response.redirect().toRoute('auth.login')
+      return error.message
     }
   }
 

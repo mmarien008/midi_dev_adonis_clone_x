@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+    @if (session.has('error'))
+      <div class="bg-red-500 text-white p-3 rounded-md mb-4 text-sm text-center">
+        {{ session.get('error') }}
+      </div>
+    @endif
+    
+    <main>
+      <section class="min-h-screen bg-black text-white flex items-center justify-center px-4">
+        <div class="bg-[#16181c] rounded-xl w-full max-w-md p-6">
+          <div class="flex justify-center mb-4">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/2/22/X_logo_2023.svg"
+              alt="Logo X"
+              class="h-6"
+            />
+          </div>
+
+          <h2 class="text-2xl font-bold mb-6">{{title}}</h2>
+          {{{ await $slots.content() }}}
+       
+          
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

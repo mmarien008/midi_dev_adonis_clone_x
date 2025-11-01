@@ -1,0 +1,132 @@
+
+
+<div class="border-b flex p-4 border-b border-gray-700">
+  <a href="{{ route('user.profile',{
+              id:tweet.user.id
+            }) }}">
+
+    <div
+      class="w-12 h-12 rounded-full bg-gray-500 mr-3"
+      style="background-image: url('{{ tweet.user.photo }}'); background-size: cover; background-position: center;"
+    >
+    </div>
+  </a>
+
+  <div class="flex-1 flex flex-col">
+    <div class="flex gap-2 text-sm justify-between">
+      <div>
+        <span class="font-bold text-white">{{ tweet.user.fullName }}</span>
+        <span class="text-gray-400">{{ tweet.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
+      </div>
+      @if(tweet.user.id == auth.user.id)
+
+        <div>
+
+          <a href="{{ route('tweet.delete', { id: tweet.id }) }}">
+            <span data-id="{{ tweet.id }}" class="text-red-400 delete">Supprimer</span>
+          </a>
+        </div>
+      @end
+    </div>
+
+    <p class="mt-1 text-white w-full break-words">
+      {{ tweet.contenu }}
+    </p>
+
+    <p class="mt-1 text-blue-400">
+      @each(hashtag in tweet.hashtags)
+
+        <a href="{{ route('hashtag.show', { name: hashtag.name }) }}" class="text-blue-400 hover:underline">
+          #{{ hashtag.name }}
+</a>
+      @end
+    </p>
+
+    @if(tweet.photo)
+      <div class="mt-2 rounded-xl overflow-hidden">
+        <img src='{{ tweet.photo }}' alt="media" class="w-full object-cover" />
+      </div>
+    @end
+              
+    <div class="flex justify-between mb-3 mt-4 text-gray-400 text-sm">
+      <span class="comment-btn cursor-pointer" data-id="{{ tweet.id }}">{{ tweet.commentaires.length }}
+                  
+            Commenter</span>
+
+      <form action="{{ route('like.tweet') }}" method="POST">
+        {{ csrfField() }}
+                  <input type="hidden" name="user_id" value="{{ auth.user.id }}" />
+        <input type="hidden" name="tweet_id" value="{{ tweet.id }}" />
+
+        @if(tweet.likeTweets.some(like => like.userId === auth.user.id))
+
+          <button type="submit" class="flex items-center gap-1 text-red-500">
+            <span>{{ tweet.likeTweets.length }}</span>
+            <span>              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+                 2 6 4 4 6.5 4 8.04 4 9.54 4.81 10.35 6.09 
+                 11.16 4.81 12.66 4 14.2 4 
+                 16.7 4 18.7 6 18.7 8.5 
+                 c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                  clip-rule="evenodd"
+                />
+              </svg></span>
+          </button>
+        @else
+          <button type="submit" class="flex items-center gap-1 text-gray-500">
+            <span>{{ tweet.likeTweets.length }}</span>
+            <span>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.1-4.5-4.688-4.5A4.685 4.685 0 0012 6.75a4.685 4.685 0 00-4.312-3c-2.587 0-4.688 2.015-4.688 4.5 
+                 0 7.125 9 11.25 9 11.25s9-4.125 9-11.25z"
+                />
+              </svg></span>
+          </button>
+        @end
+      </form>
+      <a href="{{ route('tweet.retweet',{id:
+                  tweet.id
+                }) }}">
+        <span>retweeter {{ tweet.retweets.length }}</span>
+      </a>
+    </div>
+    <form
+      method="post"
+      action="{{ route('commentaire.store') }}"
+      id="comment-box-{{ tweet.id }}"
+      class="hidden mt-3 mb-3"
+    >
+
+      <input type="text" class="hidden" name="id_tweet" value="{{ tweet.id }}" />
+      {{ csrfField() }}
+          <textarea
+        name="contenu"
+        id="comment-input-{{ tweet.id }}"
+        class="w-full bg-gray-800 text-white p-2 rounded"
+        placeholder="Écrire un commentaire..."
+      ></textarea>
+      <button
+        type="submit"
+        class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded send-comment"
+      >
+        Commenter
+          </button>
+    </form>
+    @each(commentaire in tweet.commentaires)
+      @!component('components/commentaireComponent', {commentaire,tweet})
+    @end
+  </div>
+</div>

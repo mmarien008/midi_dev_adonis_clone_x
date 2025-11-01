@@ -4,7 +4,6 @@
 export default class AisController {
 
     public async suggePage({view}: HttpContext) {
-    
     return view.render('pages/grok/createTweet')
   }
 

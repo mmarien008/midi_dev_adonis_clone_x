@@ -17,7 +17,11 @@ export default class UsersController {
         .preload('tweets', (user) => {
           user.preload('user').preload('commentaires', (commentsQuery) => {
             commentsQuery.preload('user')
-          })
+          }).preload('commentaires', (commentsQuery) => {
+        commentsQuery.preload('user').preload('LikeCommentaires')
+      }).preload('likeTweets')  .preload('retweets')
+      .preload('hashtags')
+      .orderBy('tweets.id', 'desc')
         })
         .firstOrFail()
 

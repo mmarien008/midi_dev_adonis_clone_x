@@ -55,7 +55,7 @@ export default class TweetsController {
         userId:auth.user?.id,
         tweetId:tweet.id,
       })
-      return response.redirect().toRoute('time_line.show_data')
+      return response.redirect().back()
     } catch (error) {
       return error.message
     }

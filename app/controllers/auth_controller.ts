@@ -111,10 +111,10 @@ export default class AuthController {
 
       let user = await User.verifyCredentials(email, password)
 
-       if (user.$attributes.is_verify == false) {
-        session.flash('errors', 'compte non verifié')
-         return response.redirect().toRoute('auth.login')
-       }
+      //  if (user.$attributes.is_verify == false) {
+      //   session.flash('errors', 'compte non verifié')
+      //    return response.redirect().toRoute('auth.login')
+      //  }
       await auth.use('web').login(user)
       return response.redirect().toRoute('time_line.show_data')
     } catch (error) {

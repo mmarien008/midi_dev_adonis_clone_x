@@ -16,4 +16,9 @@ export default defineConfig({
       reload: ['resources/views/**/*.edge'],
     }),
   ],
+
+  server: {
+    host: true, // accepte toutes les IP locales
+    allowedHosts: ['midi-dev-adonis-clone-x.onrender.com'], // ton domaine Render
+  },
 })

@@ -20,9 +20,9 @@ export default class AuthController {
         return response.redirect().back()
       }
 
-      let user = await User.create({ fullName, email, password })
+      await User.create({ fullName, email, password })
 
-       await this.send_email(user)
+       //await this.send_email(user)
        session.flash('success', 'User registered successfully')
     
        return response.redirect().toRoute('verify.page')
@@ -107,15 +107,14 @@ export default class AuthController {
   async toLogin({ request, response, auth, session }: HttpContext) {
     try {
 
-    
       let { email, password } = await request.validateUsing(loginUserValidator)
 
       let user = await User.verifyCredentials(email, password)
 
-       if (user.$attributes.is_verify == false) {
-        session.flash('errors', 'compte non verifié')
-         return response.redirect().toRoute('auth.login')
-       }
+       //if (user.$attributes.is_verify == false) {
+        //session.flash('errors', 'compte non verifié')
+        // return response.redirect().toRoute('auth.login')
+      // }
       await auth.use('web').login(user)
       return response.redirect().toRoute('time_line.show_data')
     } catch (error) {

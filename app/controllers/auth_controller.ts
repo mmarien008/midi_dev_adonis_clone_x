@@ -22,7 +22,7 @@ export default class AuthController {
 
       let user = await User.create({ fullName, email, password })
 
-       await this.send_email(user)
+       //await this.send_email(user)
        session.flash('success', 'User registered successfully')
     
        return response.redirect().toRoute('verify.page')

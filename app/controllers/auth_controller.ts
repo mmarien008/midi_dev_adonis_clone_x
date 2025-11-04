@@ -2,15 +2,20 @@ import User from '#models/user'
 import VerifyCode from '#models/verify_code'
 import { createUserValidator, loginUserValidator } from '#validators/user'
 import type { HttpContext } from '@adonisjs/core/http'
-import mail from '@adonisjs/mail/services/main'
 import { DateTime } from 'luxon'
+import env from '#start/env'
+import sgMail from '@sendgrid/mail'
+
+sgMail.setApiKey(env.get('SENDGRID_API_KEY')!)
 
 export default class AuthController {
   async register({ view }: HttpContext) {
     return view.render('pages/auth/register')
   }
 
-  async store({ request, session, response }: HttpContext) {
+
+
+  async store({ request, session, response,view }: HttpContext) {
     try {
       const { fullName, email, password, confirme } =
         await request.validateUsing(createUserValidator)
@@ -22,7 +27,7 @@ export default class AuthController {
 
       let user = await User.create({ fullName, email, password })
 
-       await this.send_email(user)
+       await this.send_email(user,view)
        return response.redirect().toRoute('verify.page')
 
        //session.flash('success', 'User registered successfully')
@@ -34,24 +39,36 @@ export default class AuthController {
     }
   }
 
-  async send_email(user: User) {
-    const code = Math.floor(100000 + Math.random() * 900000).toString()
-    await VerifyCode.updateOrCreate(
-      { userId: user.id },
-      {
-        code,
-        isUsed: false,
-        expiresAt: DateTime.now().plus({ minutes: 10 }),
-      }
-    )
-    await mail.send((message) => {
-      message
-        .to(user.email)
-        .from(process.env.MAIL_FROM_ADDRESS!)
-        .subject('Vérifiez votre adresse email')
-        .htmlView('emails/verify_email', { fullName: user.fullName, code })
-    })
-  }
+async send_email(user: User,view: HttpContext['view']) {
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString()
+
+
+  await VerifyCode.updateOrCreate(
+    { userId: user.id },
+    {
+      code,
+      isUsed: false,
+      expiresAt: DateTime.now().plus({ minutes: 10 }),
+    }
+  )
+
+  const html = await view.render('emails/verify_email', {
+    fullName: user.fullName,
+    code,
+  })
+
+  await sgMail.send({
+    to: user.email,
+    from: {
+      email: env.get('MAIL_FROM_ADDRESS')!,
+      name: env.get('MAIL_FROM_NAME')!,
+    },
+    subject: 'Vérifiez votre adresse email',
+    html,
+  })
+}
+
 
   async verify_page({ view }: HttpContext) {
     return view.render('emails/insert_message_confirme')

@@ -60,6 +60,7 @@
     "@adonisjs/shield": "^8.2.0",
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^4.0.0",
+    "@sendgrid/mail": "^8.1.6",
     "@vinejs/vine": "^3.0.1",
     "cohere-ai": "^7.19.0",
     "edge.js": "^6.2.1",

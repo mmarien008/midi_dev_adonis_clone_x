@@ -7,11 +7,37 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
   <body>
-    @if (session.has('error'))
-      <div class="bg-red-500 text-white p-3 rounded-md mb-4 text-sm text-center">
-        {{ session.get('error') }}
-      </div>
-    @endif
+ @if(flashMessages.get('errors'))
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: '{{ flashMessages.get("errors") }}',
+        confirmButtonText: 'OK',
+        timer: 5000,
+        timerProgressBar: true,
+      })
+    })
+  </script>
+@endif
+
+@if(flashMessages.get('success'))
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Succès',
+        text: '{{ flashMessages.get("success") }}',
+        confirmButtonText: 'OK',
+        timer: 5000,
+        timerProgressBar: true,
+      })
+    })
+  </script>
+@endif
+
+
     
     <main>
       <section class="min-h-screen bg-black text-white flex items-center justify-center px-4">
@@ -31,5 +57,6 @@
         </div>
       </section>
     </main>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>

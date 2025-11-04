@@ -30,12 +30,9 @@ export default class AuthController {
        await this.send_email(user,view)
        return response.redirect().toRoute('verify.page')
 
-       //session.flash('success', 'User registered successfully')
-      // return response.redirect().toRoute('auth.login')
-       
     } catch (error) {
-      session.flash('errors', 'error du serveur')
-      return error.message
+      session.flash('errors', 'Une erreur s’est produite, veuillez réessayer.')
+       return response.redirect().back()
     }
   }
 
@@ -137,11 +134,9 @@ async send_email(user: User,view: HttpContext['view']) {
       await auth.use('web').login(user)
       return response.redirect().toRoute('time_line.show_data')
     } catch (error) {
-      session.flash('notification', {
-        type: 'error',
-        message: error.message || 'erreur mot de passe ou email incorecte.',
-      })
-      return error.message
+      session.flash('errors', 'erreur mot de passe ou email incorecte')
+      
+       return response.redirect().toRoute('auth.login')
     }
   }
 

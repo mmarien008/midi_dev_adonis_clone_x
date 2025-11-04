@@ -11,6 +11,37 @@
     </title>
   </head>
   <body>
+ @if(flashMessages.get('errors'))
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: '{{ flashMessages.get("errors") }}',
+        confirmButtonText: 'OK',
+        timer: 5000,
+        timerProgressBar: true,
+      })
+    })
+  </script>
+@endif
+
+@if(flashMessages.get('success'))
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Succès',
+        text: '{{ flashMessages.get("success") }}',
+        confirmButtonText: 'OK',
+        timer: 5000,
+        timerProgressBar: true,
+      })
+    })
+  </script>
+@endif
+
+
     <div class="flex max-w-[1200px] mx-auto min-h-screen bg-black text-white">
       <!-- Barre gauche -->
       <aside class="w-[250px] p-4 border-r border-gray-800 hidden md:block">
@@ -173,5 +204,7 @@
         </div>
       </aside>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   </body>
 </html>

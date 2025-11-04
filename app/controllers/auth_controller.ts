@@ -22,15 +22,15 @@ export default class AuthController {
 
       let user = await User.create({ fullName, email, password })
 
-       //await this.send_email(user)
-       //return response.redirect().toRoute('verify.page')
+       await this.send_email(user)
+       return response.redirect().toRoute('verify.page')
 
-       session.flash('success', 'User registered successfully')
-       return response.redirect().toRoute('auth.login')
+       //session.flash('success', 'User registered successfully')
+      // return response.redirect().toRoute('auth.login')
        
     } catch (error) {
       session.flash('errors', 'error du serveur')
-      return response.redirect().back()
+      return error.message
     }
   }
 
@@ -113,10 +113,10 @@ export default class AuthController {
 
       let user = await User.verifyCredentials(email, password)
 
-      //  if (user.$attributes.is_verify == false) {
-      //   session.flash('errors', 'compte non verifié')
-      //    return response.redirect().toRoute('auth.login')
-      //  }
+        if (user.$attributes.is_verify == false) {
+         session.flash('errors', 'compte non verifié')
+          return response.redirect().toRoute('auth.login')
+        }
       await auth.use('web').login(user)
       return response.redirect().toRoute('time_line.show_data')
     } catch (error) {

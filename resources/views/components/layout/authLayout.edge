@@ -20,6 +20,14 @@
       })
     })
   </script>
+
+
+@endif
+
+@if(flashMessages.get('errorType') === 'unverified')
+  <p class="text-yellow-600 text-center mt-2 font-medium">
+    Compte non vérifié. Veuillez vérifier votre e-mail avant de continuer <a href="{{route('ressend_code.code')}}" class="text-blue-500 hover:underline" >en cliquant ici</a>.
+  </p>
 @endif
 
 @if(flashMessages.get('success'))

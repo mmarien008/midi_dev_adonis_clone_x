@@ -13,59 +13,56 @@ export default class AuthController {
     return view.render('pages/auth/register')
   }
 
-
-
-  async store({ request, session, response,view }: HttpContext) {
+  async store({ request, session, response, view }: HttpContext) {
     try {
       const { fullName, email, password, confirme } =
         await request.validateUsing(createUserValidator)
-
       if (password != confirme) {
         session.flash('errors', 'les deux mot de passe ne correspondent pas')
         return response.redirect().back()
       }
-
       let user = await User.create({ fullName, email, password })
+      session.put('pendingUser', {
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+      })
 
-       await this.send_email(user,view)
-       return response.redirect().toRoute('verify.page')
-
+      await this.send_email(user, view)
+      session.flash('success', 'verifiez votre mail  !')
+      return response.redirect().toRoute('verify.page')
     } catch (error) {
       session.flash('errors', 'Une erreur s’est produite, veuillez réessayer.')
-       return response.redirect().back()
+      return response.redirect().back()
     }
   }
 
-async send_email(user: User,view: HttpContext['view']) {
+  async send_email(user: User, view: HttpContext['view']) {
+    const code = Math.floor(100000 + Math.random() * 900000).toString()
+    await VerifyCode.updateOrCreate(
+      { userId: user.id },
+      {
+        code,
+        isUsed: false,
+        expiresAt: DateTime.now().plus({ minutes: 10 }),
+      }
+    )
 
-  const code = Math.floor(100000 + Math.random() * 900000).toString()
-
-
-  await VerifyCode.updateOrCreate(
-    { userId: user.id },
-    {
+    const html = await view.render('emails/verify_email', {
+      fullName: user.fullName,
       code,
-      isUsed: false,
-      expiresAt: DateTime.now().plus({ minutes: 10 }),
-    }
-  )
+    })
 
-  const html = await view.render('emails/verify_email', {
-    fullName: user.fullName,
-    code,
-  })
-
-  await sgMail.send({
-    to: user.email,
-    from: {
-      email: env.get('MAIL_FROM_ADDRESS')!,
-      name: env.get('MAIL_FROM_NAME')!,
-    },
-    subject: 'Vérifiez votre adresse email',
-    html,
-  })
-}
-
+    await sgMail.send({
+      to: user.email,
+      from: {
+        email: env.get('MAIL_FROM_ADDRESS')!,
+        name: env.get('MAIL_FROM_NAME')!,
+      },
+      subject: 'Vérifiez votre adresse email',
+      html,
+    })
+  }
 
   async verify_page({ view }: HttpContext) {
     return view.render('emails/insert_message_confirme')
@@ -106,6 +103,28 @@ async send_email(user: User,view: HttpContext['view']) {
     }
   }
 
+  async ressend_code({ session, response, view }: HttpContext) {
+    try {
+      const userData = session.get('pendingUser')
+
+      if (!userData) {
+        session.flash('errors', 'Aucun utilisateur en attente de vérification.')
+        return response.redirect().toRoute('register.page')
+      }
+      const user = await User.find(userData.id)
+      if (!user) {
+        session.flash('errors', 'Utilisateur introuvable.')
+        return response.redirect().toRoute('register.page')
+      }
+      await this.send_email(user, view)
+      session.flash('success', 'verifiez votre mail  !')
+      return response.redirect().toRoute('verify.page')
+    } catch (error) {
+      session.flash('errors', 'error du serveur')
+      return response.redirect().back()
+    }
+  }
+
   async login({ view }: HttpContext) {
     return view.render('pages/auth/login')
   }
@@ -122,26 +141,34 @@ async send_email(user: User,view: HttpContext['view']) {
 
   async toLogin({ request, response, auth, session }: HttpContext) {
     try {
-
       let { email, password } = await request.validateUsing(loginUserValidator)
-
       let user = await User.verifyCredentials(email, password)
+      if (user.$attributes.is_verify == false) {
+      
+          session.flash({
+            errors: 'Compte non vérifié',
+            errorType: 'unverified',
+          })
 
-        if (user.$attributes.is_verify == false) {
-         session.flash('errors', 'compte non verifié')
-          return response.redirect().toRoute('auth.login')
-        }
+          session.put('pendingUser', {
+            id: user.id,
+            fullName: user.fullName,
+            email: user.email,
+          })
+
+        return response.redirect().toRoute('auth.login')
+      }
       await auth.use('web').login(user)
       return response.redirect().toRoute('time_line.show_data')
     } catch (error) {
       session.flash('errors', 'erreur mot de passe ou email incorecte')
-      
-       return response.redirect().toRoute('auth.login')
+
+      return response.redirect().toRoute('auth.login')
     }
   }
 
-  async logout({ auth,response }: HttpContext) {
+  async logout({ auth, response }: HttpContext) {
     await auth.use('web').logout()
-     return response.redirect().toRoute('auth.login')
+    return response.redirect().toRoute('auth.login')
   }
 }

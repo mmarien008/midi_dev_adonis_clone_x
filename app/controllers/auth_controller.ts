@@ -33,7 +33,7 @@ export default class AuthController {
       return response.redirect().toRoute('verify.page')
     } catch (error) {
       session.flash('errors', 'Une erreur s’est produite, veuillez réessayer.')
-      return error.message
+      return error
     }
   }
 
